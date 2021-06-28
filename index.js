@@ -6,8 +6,13 @@ const server = require("http").Server(app);
 // the main difference is that here we are creating server on our own on the other hand
 // express creates the server for us when we use app.listen
 const io = require("socket.io")(server);// we want socket.io to work on this server
+const { ExpressPeerServer } = require('peer');
+const peerServer = ExpressPeerServer(server, {
+  debug: true
+});
 const { v4: uuidV4 } = require("uuid"); // creates a link to newly created room
 
+app.use('/peerjs', peerServer);
 
 app.set("view engine", "ejs");// settin EJS as templating engine. EJS looks into view folder
 // template engine enable us to use static template files and loads the value of variables on runtime
