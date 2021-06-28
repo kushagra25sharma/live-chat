@@ -26,10 +26,8 @@ app.get("/:room", (req, res) => { // room will contains a param which will be pr
 // if 10 clients make connection with the browser they will each have a socket
 io.on("connection", (socket) => {
 	// when everything is set up (we have user) on the frontend we call this "join-room" function 
-	console.log("1");
 	socket.on("join-room", (roomId, userId) => {
 	    //console.log(roomId, userId);
-        console.log("2");
 		// joining new connection to the room with roomId
 		// it makes the matching socket instances join the same room
 		socket.join(roomId); 
@@ -38,7 +36,7 @@ io.on("connection", (socket) => {
 		socket.broadcast.to(roomId).emit("user-connected", userId);
 
 		socket.on("disconnect", () => {
-			console.log("3");
+	
 			socket.broadcast.to(roomId).emit("user-disconnected", userId);
 		});
 	});

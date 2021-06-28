@@ -9,7 +9,7 @@ const videoGrid = document.getElementById("video-grid");;
 // Making connection with peer server. The peer server will take all the webRTC information of the user and turns it into a userId
 const peer = new Peer(undefined, { // we are passing (id) undefined as we want peerjs to take care of id on its own
     host: "/",
-    port: "5001"
+    port: "443"
 });
 
 // getting reference to a video
@@ -25,37 +25,37 @@ navigator.mediaDevices.getUserMedia({// it prompts the user for permission to us
     video: true,
     audio: true,
 }).then(stream => {// stream is going to be our video and audio and we want our video object to use that stream (myVideo)
-    console.log("5");
+    
     myVideoStream = stream;
     addVideoStream(myVideo, myVideoStream);// adding our video stream
 
     // to get to see other video we want to take the call which the other user sends
     peer.on("call", (call) => {
         call.answer(stream); // for us to see their video
-        console.log("11");
+        
         // this way the other user can also see our video
         const video = document.createElement("video");
         call.on("stream", userVideoStream => {
-            console.log("12");
+            
             addVideoStream(video, userVideoStream)// adding other users' video stream
         });
     });
 
     // listner for new member connection
     socket.on("user-connected", (userId) => {
-    //console.log("User id is: ", userId);
+    //("User id is: ", userId);
     // sending our video stream to new user
     //connectToNewUser(userId, stream);
-    console.log("7");
+   
     // sending the existing stream to new user 
     setTimeout(connectToNewUser,1000,userId,stream);// to resolve the race problem
 });
 })
 
 socket.on("user-disconnected", userId => {
-    //console.log(userId);
+    //(userId);
     if(peers[userId]){
-        console.log("14");
+        
         peers[userId].close(); // closing connection with the user
     }
 });
@@ -63,42 +63,42 @@ socket.on("user-disconnected", userId => {
 // as soon as we connects to peer server we will join our user to a room
 peer.on("open", id => {
     // calling join room function in index.js
-    console.log("8");
+    
     socket.emit("join-room", ROOM_ID, id);
 });
 
 const connectToNewUser = (userId, stream) => {
     // calling user with id "userId" and giving them our stream
-    console.log("9");
+   
     const call = peer.call(userId, stream);// sending our stream to the new user
 
     // and after that they will send their video stream which we want to add to ours
     const video = document.createElement("video");
     call.on("stream", userVideoStream => {
-        console.log("10");
+      
         addVideoStream(video, userVideoStream);
     });
 
     // whenever person leaves we want to disconnect their video
     call.on("close", () => {
-        console.log("13");
+        
         video.remove();
     });
 
     // every userId is linked to the call we make with them
-    console.log("prevoius ", peers);
+    ("prevoius ", peers);
     peers[userId] = call;
-    console.log("new ", peers);
+    ("new ", peers);
 }
 
 const addVideoStream = (video, stream) => {
     video.srcObject = stream; // setting the mediaStream of video object
     // this will allow us to play our video
-    console.log("6");
+  
     video.addEventListener("loadedmetadata", () => {
         video.play(); // once the stream is loaded play the video
     });
-    console.log("video ", video);
+    ("video ", video);
     videoGrid.append(video); // adding new video to videoGrid
 }
 
@@ -126,7 +126,7 @@ const setUnmuteButton = () => { // change the font icon
 
 // Play Stop
 const playStop = () => {
-    //console.log('object')
+    //('object')
     let enabled = myVideoStream.getVideoTracks()[0].enabled;
     if (enabled) {
       myVideoStream.getVideoTracks()[0].enabled = false;
