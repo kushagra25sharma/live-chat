@@ -10,7 +10,7 @@ const videoGrid = document.getElementById("video-grid");;
 const peer = new Peer(undefined, { // we are passing (id) undefined as we want peerjs to take care of id on its own
     path: '/peerjs',
     host: "/",
-    port: "5001",
+    port: "443",
 });
 
 // getting reference to a video
