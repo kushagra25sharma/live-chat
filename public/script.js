@@ -54,16 +54,14 @@ navigator.mediaDevices.getUserMedia({// it prompts the user for permission to us
 
 socket.on("user-disconnected", userId => {
     //(userId);
-    if(peers[userId]){
-        
+    if(peers[userId]){       
         peers[userId].close(); // closing connection with the user
     }
 });
 
 // as soon as we connects to peer server we will join our user to a room
 peer.on("open", id => {
-    // calling join room function in index.js
-    
+    // calling join room function in index.js    
     socket.emit("join-room", ROOM_ID, id);
 });
 
@@ -74,21 +72,17 @@ const connectToNewUser = (userId, stream) => {
 
     // and after that they will send their video stream which we want to add to ours
     const video = document.createElement("video");
-    call.on("stream", userVideoStream => {
-      
+    call.on("stream", userVideoStream => {   
         addVideoStream(video, userVideoStream);
     });
 
     // whenever person leaves we want to disconnect their video
-    call.on("close", () => {
-        
+    call.on("close", () => {       
         video.remove();
     });
 
     // every userId is linked to the call we make with them
-    ("prevoius ", peers);
     peers[userId] = call;
-    ("new ", peers);
 }
 
 const addVideoStream = (video, stream) => {
