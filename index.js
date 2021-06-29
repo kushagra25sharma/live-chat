@@ -1,22 +1,23 @@
 const express = require("express");
 const app = express();
 const server = require("http").Server(app);
+const cors = require('cors');
+app.use(cors());
 // creating server by this way help us to reuse the server instance to run socket.io
 // we can also do this by app.listen as it also gives server instance
 // the main difference is that here we are creating server on our own on the other hand
 // express creates the server for us when we use app.listen
 const io = require("socket.io")(server);// we want socket.io to work on this server
+const { v4: uuidV4 } = require("uuid"); // creates a link to newly created room
 const { ExpressPeerServer } = require('peer');
 const peerServer = ExpressPeerServer(server, {
   debug: true
 });
-const { v4: uuidV4 } = require("uuid"); // creates a link to newly created room
-
 app.use('/peerjs', peerServer);
-
 app.set("view engine", "ejs");// settin EJS as templating engine. EJS looks into view folder
 // template engine enable us to use static template files and loads the value of variables on runtime
 app.use(express.static('public'));// static files will be stored in public folder
+
 
 app.get("/", (req, res) => { // whenever a user lands on "/" uuid will create a new link and redirects the user to that link 
 	res.redirect(`/${uuidV4()}`); // so that they can have their own room 

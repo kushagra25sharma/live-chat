@@ -8,8 +8,9 @@ const videoGrid = document.getElementById("video-grid");;
 
 // Making connection with peer server. The peer server will take all the webRTC information of the user and turns it into a userId
 const peer = new Peer(undefined, { // we are passing (id) undefined as we want peerjs to take care of id on its own
+    path: '/peerjs',
     host: "/",
-    port: "443"
+    port: "5001",
 });
 
 // getting reference to a video
@@ -48,6 +49,7 @@ navigator.mediaDevices.getUserMedia({// it prompts the user for permission to us
     //connectToNewUser(userId, stream);
    
     // sending the existing stream to new user 
+    //connectToNewUser(userId, stream);
     setTimeout(connectToNewUser,1000,userId,stream);// to resolve the race problem
 });
 })
